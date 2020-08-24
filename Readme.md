@@ -22,9 +22,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## Authors
 
 * **Aman Ojha** - *Initial work* - [Aman Ojha](https://github.com/coderaman07)
-
-Lets Grab Your Username from Github
-
 * **Kushal Upadhyay** - *Initial work* - [Kushal Upadhyay](https://github.com/KUSHAL8112001)
 
 My work to Explain you is pretty much Done.
