@@ -1,10 +1,11 @@
-# Java Projects
+# Banking Management Application in Java
 
-This Project is made while learning Java Language and will have some Good and Awesome Projects.
+This is the First Repository By Aman and Kushal through Github.com. This will be Readme file for this Project I will Update it Later on as this is Just for you to get a Basic Understanding how to work from now on.
 
 ## Getting Started
 
 You just have to install JDK 14 on your Machine.
+I have Installed Java 14 SDK in My System and rest Depends Upon You
 
 ### Installing
 
@@ -21,6 +22,13 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## Authors
 
 * **Aman Ojha** - *Initial work* - [Aman Ojha](https://github.com/coderaman07)
+
+Lets Grab Your Username from Github
+
+* **Kushal Upadhyay** - *Initial work* - [Kushal Upadhyay](https://github.com/KUSHAL8112001)
+
+My work to Explain you is pretty much Done.
+Lets Update to Github Save it first.
 
 ## License
 
