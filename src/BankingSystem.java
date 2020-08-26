@@ -41,7 +41,6 @@ public class BankingSystem {
             FileWriter myWriter = new FileWriter("filename.txt");
             myWriter.write("Name                          Account Number    Amount");
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -50,11 +49,10 @@ public class BankingSystem {
 
     public static void openBankAccount() {
         Scanner input = new Scanner(System.in);
-        int numberOfCustomers = 0;
-        String name = "";
-        int accountNumber = 0;
-        int amount = 0;
-        int pin = 0;
+        int numberOfCustomers =0 ;
+        int accountNumber = 0 ;
+        int amount ;
+        int pin ;
         System.out.print("Enter The Number of Customers : ");
         try {
             numberOfCustomers = input.nextInt();
@@ -71,16 +69,27 @@ public class BankingSystem {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        try{
-            System.out.print("Enter Your Name : ");
-            name = input.next();
-            System.out.print("Enter Amount to be Deposited : ");
-            amount = input.nextInt();
-            System.out.print("Enter Your Pin Number : ");
-            pin = input.nextInt();
-            System.out.println(name + " " + amount + " " + pin);
-        } catch(InputMismatchException e){
-            System.out.print("Please Enter Correct Value");
+        for (int i = 0; i < numberOfCustomers; i++){
+            try{
+                if (i > 0){
+                    System.out.println("\n\nEnter the Details for "+ i+1 + "Customer");
+                }
+                System.out.print("Enter Your First Name : ");
+                String firstName = input.next();
+                System.out.print("Enter You Last Name : ");
+                String LastName = input.next();
+                System.out.print("Enter Amount to be Deposited : ");
+                amount = input.nextInt();
+                System.out.print("Enter Your Pin Number : ");
+                pin = input.nextInt();
+//                System.out.println(firstName + " " + LastName +  " " + amount + " " + pin);
+                FileWriter myFileWriter = new FileWriter("filename.txt");
+                String data = firstName + " " + LastName + " " + amount + " " + pin;
+                myFileWriter.write(data);
+                myFileWriter.close();
+            } catch(InputMismatchException | IOException e){
+                System.out.print("Please Enter Correct Value");
+            }
         }
         main(null);
     }
