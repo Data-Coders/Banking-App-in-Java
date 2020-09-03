@@ -1,142 +1,540 @@
-import java.io.FileNotFoundException;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.io.IOException;
-import java.io.File;
-import java.io.FileWriter;
-import java.lang.*;
+import java.io.*;
+import java.util.*;
 
-public class BankingSystem {
-    public static void main(String[] args){
-        view();
-        Scanner input = new Scanner(System.in);
-        int inputNumber = 0;
-        try {
-            inputNumber = input.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Please Enter the Correct Option Please");
-            main(null);
-        }
-        switch (inputNumber) {
-            case 1 -> openBankAccount();
-            case 2 -> System.out.println("Deposit Amount");
-            case 3 -> System.out.println("Withdraw Amount");
-            case 4 -> displayAllBankAccounts();
-            case 5 -> System.out.println("Exit");
-        }
-    }
-
-    public static void view(){
-        System.out.println("|______________________________________________________|");
-        System.out.println("|-----------------Welcome The Times Bank---------------|");
-        System.out.println("|======================================================|");
-        System.out.println("<<= 1. Open Bank Account                             =>>");
-        System.out.println("<<= 2. Deposit Amount                                =>>");
-        System.out.println("<<= 3. WithDraw Amount                               =>>");
-        System.out.println("<<= 4. Display all The Customers                     =>>");
-        System.out.println("<<= 5. Exit                                          =>>");
-        System.out.print("\nEnter Your Choice (1 to 5) : ");
-    }
-
-    public static void header(){
-        try {
-            FileWriter myWriter = new FileWriter("filename.txt");
-            myWriter.write("Name                          Amount    PIN Number");
-            myWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-
-    public static String space(int number, int length){
-        System.out.println(" Space ");
-        String space = "";
-        int numberOfSpace = number - length;
-        for (int i = 0; i < numberOfSpace; i++){
-            space = space.concat(" ");
-        }
-        return space;
-    }
-
-    public static void openBankAccount() {
-        Scanner input = new Scanner(System.in);
-        int numberOfCustomers =0 ;
-        System.out.print("Enter The Number of Customers : ");
-        try {
-            numberOfCustomers = input.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.println("Enter the Correct Integer as Integers are only Readable in our Servers.");
-            main(null);
-        }
-        try {
-            File myObj = new File("filename.txt");
-            if (myObj.createNewFile()) {
-                header();
+public class BankingSystem
+{
+    public static void main(String[] args)
+    {
+        boolean ProgramActive = true;
+        while(ProgramActive)
+        {
+            Scanner sc =new Scanner(System.in);
+            System.out.println("|---------------------------------------------|");
+            System.out.println("|------------Welcome to Times Bank------------|");
+            System.out.println("|---------------------------------------------|");
+            System.out.println("|<<=      Create Bank Accounts             =>>|");
+            System.out.println("|<<=      Display All Bank Accounts        =>>|");
+            System.out.println("|<<=      Deposit Money to a Account       =>>|");
+            System.out.println("|<<=      WithDraw Money From a Account    =>>|");
+            System.out.println("|<<=      Search From the DataBase         =>>|");
+            System.out.println("|<<=      Delete Particular Record         =>>|");
+            System.out.println("|<<=      Exit                             =>>|");
+            System.out.println("|---------------------------------------------|");
+            System.out.print("ENTER YOUR CHOICE : ");
+            int k=sc.nextInt();
+            switch (k) {
+                case 1 -> add();
+                case 2 -> read();
+                case 3 -> Deposit();
+                case 4 -> WithDraw();
+                case 5 -> search();
+                case 6 -> delete();
+                case 7 -> ProgramActive = false;
+                default -> {System.out.println("Please Enter the Correct choice");main(null);}
             }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        for (int i = 0; i < numberOfCustomers; i++){
-            try{
-                if (i > 0){
-                    int valueOfI = i + 1;
-                    System.out.println("\n\nEnter the Details for "+ valueOfI + " Customer");
+            if (ProgramActive){
+                System.out.print("\nWant to Continue (Y/N) : ");
+                String option = sc.next();
+                if (option.equals("Y") || option.equals("y") || option.equals("YES") || option.equals("yes") || option.equals("Yes")){
+                    System.out.println("Here we go Again");
                 }
-                System.out.print("Enter Your First Name : ");
-                String firstName = input.next();
-                System.out.print("Enter You Last Name : ");
-                String LastName = input.next();
-                System.out.print("Enter Amount to be Deposited : ");
-                String amount = input.next();
-                System.out.print("Enter Your Pin Number : ");
-                String pin = input.next();
-//                System.out.println(firstName + " " + LastName +  " " + amount + " " + pin);
-                File file = new File("filename.txt");
-                FileWriter myFileWriter = new FileWriter(file, true);
-                String name = firstName + " " + LastName;
-                System.out.println(name.length());
-                String space = space(30,name.length());
-                String space2 = space(10,amount.length());
-                String data = "\n" + name + space + amount + space2 + pin;
-                myFileWriter.write(data);
-                myFileWriter.close();
-            } catch(InputMismatchException | IOException e){
-                System.out.print("Please Enter Correct Value");
-            }
-        }
-        try{
-            System.out.println("All of Your Records Have Been Successfully Entered in the DataBase");
-            Thread.sleep(4000);
-            main(null);
-        }catch (InterruptedException e){
-            System.out.println("SomeThing Wrong Happened");
+                else if(option.equals("N") || option.equals("n") || option.equals("NO") || option.equals("no") || option.equals("No")){
+                    ProgramActive = false;
+                }
+                else System.out.println("Please Enter the Correct Option from Y/N");}
         }
     }
 
-    public static void displayAllBankAccounts(){
-        File data = new File("filename.txt");
-        try{
-            Scanner sc = new Scanner(data);
-            while(sc.hasNextLine()){
-                System.out.println(sc.nextLine());
+    public static void Deposit(){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Do you Prefer to Continue by Name or Account Number ??\n1. Account Number\n2. Name\nEnter your Choice : ");
+        String opt = input.next();
+        int optFinal = Integer.parseInt(opt);
+        switch (optFinal){
+            case 1 -> byNumber("Deposit");
+            case 2 -> byName("Deposit");
+            default -> {
+                System.out.println("Please Enter the Correct Choice");
+                Deposit();
             }
         }
-        catch (FileNotFoundException e) {
-            System.out.println("Please Create the File First.");
+    }
+
+    public static void WithDraw(){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Do you Prefer to Continue by Name or Account Number ??\n1. Account Number\n2. Name\nEnter your Choice : ");
+        String opt = input.next();
+        int optFinal = Integer.parseInt(opt);
+        switch (optFinal){
+            case 1 -> byNumber("WithDraw");
+            case 2 -> byName("WithDraw");
+            default -> {
+                System.out.println("Please Enter the Correct Choice");
+                WithDraw();
+            }
         }
+    }
+
+    public static void add()
+    {
+        File base = new File("BankAccounts.txt");
+        boolean exists = base.exists();
+        if (!exists){
+            createFile();
+        }
+        Scanner input = new Scanner(System.in);
+        try
+        {
+//            Reading the Inputs from the User
+
+            System.out.print("Enter the First Name : ");
+            String firstName = input.next();
+            System.out.print("Enter the Last Name : ");
+            String lastName = input.next();
+            System.out.print("Enter the PIN for this Account : ");
+            String pin = input.next();
+            System.out.print("Enter the Amount to Deposit : ");
+            String tempAmount = input.next();
+
+//            Read the Inputs from the User
+
+//            Got the Inputs from the User
+//            Now start the Operation to perform
+            
+            String name = firstName + " " + lastName;
+            int PIN = Integer.parseInt(pin);
+            int amount = Integer.parseInt(tempAmount);
+            Random rand = new Random();
+            int upperBound = 99;
+            int id = rand.nextInt(upperBound);
+
+            String afterName = space(name, 32);
+            String afterAccount = space(String.valueOf(id),16);
+            String afterPIN = space(pin,5);
+            afterName = afterName+"      ";
+
+//            Got the Spaces and now writing the data in the DataBase with the spaces acquired
+
+            FileWriter Obj = new FileWriter("BankAccounts.txt",true);
+
+            String data = name+afterName+id+afterAccount+PIN+afterPIN+amount;
+            Obj.write(data);
+            Obj.flush();
+            Obj.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println("DataBase not found Try Restarting the Program");
+            e.printStackTrace();
+        }
+    }
+
+    public static String space(String label, int noOfSpace){
+        int len = label.length();
+        int space = noOfSpace - len;
+        return " ".repeat(Math.max(0, space));
+    }
+
+    public static void createFile(){
         try{
-        Thread.sleep(4000);
-        }catch (InterruptedException e){
-            System.out.println("SomeThing Wrong Happened");
+            FileWriter obj = new FileWriter("BankAccounts.txt",true);
+            obj.close();
+        } catch (IOException e) {
+            System.out.println("Error Creating DataBase File Please Restart the Program");
         }
     }
 
 
+    public static void read()
+    {
+        File fileObj=new File("BankAccounts.txt");
+        try
+        {
+            Scanner s2=new Scanner(fileObj);
+            System.out.println("Name                            Account Number  PIN  Amount");
+            while(s2.hasNextLine())
+            {
+                String str=s2.nextLine();
+                System.out.println(str);
+            }
+        }
+        catch(IOException e )
+        {
+            System.out.println("FILE NOT FOUND ");
+        }
+    }
+
+
+    public static void search()
+    {
+        Scanner sc =new Scanner(System.in);
+        System.out.print("Want to Search by Name or Account Number??\n" +
+                "1. Account Number\n" +
+                "2. Name\n" +
+                "Enter Your Choice : ");
+        int opt=sc.nextInt();
+        if(opt==1)
+        {
+            File f=new File("BankAccounts.txt");
+            System.out.print("Enter the Account Number : ");
+            int accountNumber=sc.nextInt();
+            try
+            {
+                Scanner scc=new Scanner(f);
+                while(scc.hasNext())
+                {
+                    String data = scc.nextLine();
+                    for (int i = 0; i<1;i++){
+                        String[] arr = data.split(" ",26);
+                        if(accountNumber == Integer.parseInt(arr[24])){
+                            System.out.print("Name                            Account Number  PIN  Amount\n"+data);
+                        }
+                    }
+                }
+                scc.close();
+            }
+            catch(IOException e)
+            {
+                System.out.println("SORRY NOT FOUND ");
+            }
+        }
+
+        else if(opt==2)
+        {
+            File f=new File("BankAccounts.txt");
+            System.out.print("Enter the First Name of the Customer : ");
+            String firstName=sc.next();
+            System.out.print("Enter the Last Name of the Customer : ");
+            String SecondName=sc.next();
+            String nameOfStudent = firstName + " " + SecondName;
+            try
+            {
+                boolean toDisplay = true;
+                Scanner st=new Scanner(f);
+                while(st.hasNext())
+                {
+                    String data = st.nextLine();
+                    String[] arr = data.split(" ",26);
+                    for (int i = 0;i<15;i++){
+                        String name = arr[0]+" "+arr[1];
+//                        System.out.println(arr[0] + arr[1]);
+                        if (nameOfStudent.equals(name) && toDisplay){
+                            System.out.print("Name                            Account Number  PIN  Amount\n"+data);
+                            toDisplay = false;
+                        }
+                    }
+                }
+                st.close();
+            }
+            catch(IOException e)
+            {
+                System.out.println("SORRY NOT FOUND ");
+            }
+        }
+        else
+        {
+            System.out.println("RECORD NOT FOUND ");
+        }
+    }
+
+    public static void byName(String choice){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter the First Name of the Customer : ");
+        String firstName = input.next();
+        System.out.println("Enter the Last Name of the Customer : ");
+        String lastName = input.next();
+        String mainName = firstName + " " + lastName;
+        File database = new File("DataBase.txt");
+        String main_data = "";
+        try {
+            Scanner scc = new Scanner(database);
+            while (scc.hasNext()) {
+                String data = scc.nextLine();
+                String[] arr = data.split(" ",26);
+                for (int i = 0;i<15;i++){
+                    String name = arr[0]+" "+arr[1];
+                    if (mainName.equals(name)) {
+                        main_data = data;
+                        break;
+                    }
+                }
+            }
+            scc.close();
+        } catch (IOException e) {
+            System.out.println("catch block");
+        }
+
+//        Now Get the New Input from the User
+        String finalMSG = "";
+        if (choice.equals("Deposit")){
+            System.out.print("Enter the Amount You Want to Deposit : ");
+            String tempAmount = input.next();
+            int OldAmount;
+            String var = "0";
+            int pinNumber = 0;
+            try{
+                Scanner scc = new Scanner(database);
+                while(scc.hasNext()){
+                    String temp = scc.next();
+                    int len = temp.length();
+                    if(len == 4){
+                        try{
+                            pinNumber = Integer.parseInt(temp);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+//                    var = scc.next();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            OldAmount = Integer.parseInt(var);
+            int newAmount = OldAmount + Integer.parseInt(tempAmount);
+            if(newAmount > 100000000){
+                System.out.println("Entered Amount is Greater than 100 Million So your Account wont be getting Affected while You will be Reverted back to the Main Menu");
+
+            }
+
+            if(newAmount <= 100000000){
+                String regex = String.valueOf(pinNumber);
+//                52 will be on left side
+                String[] arr = main_data.split(regex,52);
+                finalMSG = arr[0] + newAmount;
+            }
 
 
 
+        }
+
+//        Now Taken and Now Write all the Data to the File
+
+        try {
+            File inputFile = new File("BankAccounts.txt");
+            File tempFile = new File("DataBase_temp.txt");
+
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            String currentLine;
+
+            while ((currentLine = reader.readLine()) != null) {
+                String trimmedLine = currentLine.trim();
+                if (trimmedLine.equals(main_data)) currentLine = finalMSG;
+                writer.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer.close();
+            reader.close();
+            boolean successful = tempFile.renameTo(inputFile);
+            System.out.println(successful);
+        } catch (IOException e) {
+            System.out.println("Hello");
+        }
 
 
+
+    }
+
+    public static void byNumber(String choice){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter the First Name of the Customer : ");
+        String firstName = input.next();
+        System.out.println("Enter the Last Name of the Customer : ");
+        String lastName = input.next();
+        String mainName = firstName + " " + lastName;
+        File database = new File("DataBase.txt");
+        String main_data = "";
+        try {
+            Scanner scc = new Scanner(database);
+            while (scc.hasNext()) {
+                String data = scc.nextLine();
+                String[] arr = data.split(" ",26);
+                for (int i = 0;i<15;i++){
+                    String name = arr[0]+" "+arr[1];
+                    if (mainName.equals(name)) {
+                        main_data = data;
+                        break;
+                    }
+                }
+            }
+            scc.close();
+        } catch (IOException e) {
+            System.out.println("catch block");
+        }
+
+//        Now Get the New Input from the User
+        String finalMSG = "";
+        if (choice.equals("Deposit")){
+            System.out.print("Enter the Amount You Want to Deposit : ");
+            String tempAmount = input.next();
+            int OldAmount;
+            String var = "0";
+            int pinNumber = 0;
+            try{
+                Scanner scc = new Scanner(database);
+                while(scc.hasNext()){
+                    String temp = scc.next();
+                    int len = temp.length();
+                    if(len == 4){
+                        try{
+                            pinNumber = Integer.parseInt(temp);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+//                    var = scc.next();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            OldAmount = Integer.parseInt(var);
+            int newAmount = OldAmount + Integer.parseInt(tempAmount);
+            if(newAmount > 100000000){
+                System.out.println("Entered Amount is Greater than 100 Million So your Account wont be getting Affected while You will be Reverted back to the Main Menu");
+
+            }
+
+            if(newAmount <= 100000000){
+                String regex = String.valueOf(pinNumber);
+//                52 will be on left side
+                String[] arr = main_data.split(regex,52);
+                finalMSG = arr[0] + newAmount;
+            }
+
+
+
+        }
+
+//        Now Taken and Now Write all the Data to the File
+
+        try {
+            File inputFile = new File("BankAccounts.txt");
+            File tempFile = new File("DataBase_temp.txt");
+
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            String currentLine;
+
+            while ((currentLine = reader.readLine()) != null) {
+                String trimmedLine = currentLine.trim();
+                if (trimmedLine.equals(main_data)) currentLine = finalMSG;
+                writer.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer.close();
+            reader.close();
+            boolean successful = tempFile.renameTo(inputFile);
+            System.out.println(successful);
+        } catch (IOException e) {
+            System.out.println("Hello");
+        }
+
+
+
+    }
+
+    public static void delete() {
+        Scanner sc =new Scanner(System.in);
+        System.out.print("Want to Delete by Name or Account Number??\n1. Account Number\n2. Name\nEnter Your Choice : ");
+        int opt=sc.nextInt();
+        if(opt==1)
+        {
+            System.out.println("Enter the Account Number : ");
+            int rollNumber = sc.nextInt();
+            String main_data = "";
+            File main = new File("BankAccounts.txt");
+            try
+            {
+                Scanner scc=new Scanner(main);
+                while(scc.hasNext())
+                {
+                    String data = scc.nextLine();
+                    for (int i = 0; i<1;i++){
+                        String[] arr = data.split(" ",26);
+                        if(rollNumber == Integer.parseInt(arr[24])){
+                            main_data = data;
+                        }
+                    }
+                }
+                scc.close();
+            }
+            catch(IOException e)
+            {
+                System.out.println("catch block");
+            }
+
+            try{
+                File inputFile = new File("BankAccounts.txt");
+                File tempFile = new File("DataBase_temp.txt");
+
+                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+                String currentLine;
+
+                while((currentLine = reader.readLine()) != null) {
+                    String trimmedLine = currentLine.trim();
+                    if(trimmedLine.equals(main_data)) continue;
+                    writer.write(currentLine + System.getProperty("line.separator"));
+                }
+                writer.close();
+                reader.close();
+                boolean successful = tempFile.renameTo(inputFile);
+                System.out.println(successful);
+            } catch (IOException e){
+                System.out.println("Hello");
+            }
+        }
+
+        else if(opt==2) {
+            System.out.print("Enter the First Name : ");
+            String firstName = sc.next();
+            System.out.print("Enter the Last Name : ");
+            String lastName = sc.next();
+            String mainName = firstName + " " + lastName;
+            String main_data = "";
+            File main = new File("BankAccounts.txt");
+            try {
+                Scanner scc = new Scanner(main);
+                while (scc.hasNext()) {
+                    String data = scc.nextLine();
+                    String[] arr = data.split(" ",26);
+                    for (int i = 0;i<15;i++){
+                        String name = arr[0]+" "+arr[1];
+                        if (mainName.equals(name)) {
+                            main_data = data;
+                            break;
+                        }
+                    }
+                }
+                scc.close();
+            } catch (IOException e) {
+                System.out.println("catch block");
+            }
+
+            try {
+                File inputFile = new File("BankAccounts.txt");
+                File tempFile = new File("DataBase_temp.txt");
+
+                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+                String currentLine;
+
+                while ((currentLine = reader.readLine()) != null) {
+                    String trimmedLine = currentLine.trim();
+                    if (trimmedLine.equals(main_data)) continue;
+                    writer.write(currentLine + System.getProperty("line.separator"));
+                }
+                writer.close();
+                reader.close();
+                boolean successful = tempFile.renameTo(inputFile);
+                System.out.println(successful);
+            } catch (IOException e) {
+                System.out.println("Hello");
+            }
+        }
+    }
 }
