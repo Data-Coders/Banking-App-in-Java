@@ -18,9 +18,10 @@ public class BankingSystem
             System.out.println("|<<=      WithDraw Money From a Account    =>>|");
             System.out.println("|<<=      Search From the DataBase         =>>|");
             System.out.println("|<<=      Delete Particular Record         =>>|");
+            System.out.println("|<<=      Delete All the Records in DataBase>>|");
             System.out.println("|<<=      Exit                             =>>|");
             System.out.println("|---------------------------------------------|");
-            System.out.print("ENTER YOUR CHOICE : ");
+            System.out.print("Enter Your Choice : ");
             int k=sc.nextInt();
             switch (k) {
                 case 1 -> add();
@@ -29,7 +30,8 @@ public class BankingSystem
                 case 4 -> WithDraw();
                 case 5 -> search();
                 case 6 -> delete();
-                case 7 -> ProgramActive = false;
+                case 7 -> deleteRecords();
+                case 8 -> ProgramActive = false;
                 default -> {System.out.println("Please Enter the Correct choice");main(null);}
             }
             if (ProgramActive){
@@ -42,6 +44,15 @@ public class BankingSystem
                     ProgramActive = false;
                 }
                 else System.out.println("Please Enter the Correct Option from Y/N");}
+        }
+    }
+
+    public static void deleteRecords(){
+        try{
+            FileWriter fileWrite = new FileWriter("BankAccounts.txt");
+            fileWrite.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
